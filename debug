@@ -1,0 +1,19 @@
+1.测试user.jsp报错
+报错信息：The server time zone value '锟叫癸拷锟斤拷准时锟斤拷' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+分析：time zone报错可能是因为时区问题 百度后把datasource的url从jdbc:mysql://localhost:3306/system改为jdbc:mysql://localhost:3306/system?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+问题解决
+
+2.href跳转页面css文件不刷新
+解决方法：在要跳转的页面的link中使用绝对路径
+
+3.往数据库中插入数据时输入中文会导致乱码
+解决方法：
+1)  datasource的url设置为jdbc:mysql://localhost:3306/system?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+2)  servlet中UserServlet中doPost方法第一行加上req.setCharacterEncoding("UTF-8");
+
+4.改用反射应用输入表单信息报错：
+提供的错误信息表明在尝试向'admin'表中插入数据时，'user_name'列不能为空。问题可能与你的插入查询中的'user_name'参数被设置为null有关。
+解决方法：询问gpt得知user_name'参数没有被正确传递或处理，导致其被赋予了null
+关键点：改用反射应用时忘记 user.setUser_name(req.getParameter("username")); user_name和username不是对应的 改正后成功运行
+
+5.解决了save或update时有数据未填就提交会导致跳转空白页面的bug
